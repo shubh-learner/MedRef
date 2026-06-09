@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MedRef — Clinical AI Reference</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <!-- Settings Modal -->
+  <div id="settings-modal" class="modal-overlay hidden">
+    <div class="modal-box">
+      <div class="modal-header">
+        <span class="modal-title">⚙️ Configuration</span>
+        <button id="modal-close" class="icon-btn">✕</button>
+      </div>
+      <p class="modal-desc">Enter your Groq API key. It is stored only in your browser's localStorage and never sent anywhere except the local proxy server.</p>
+      <label class="input-label">Groq API Key</label>
+      <input id="api-key-input" type="password" placeholder="gsk_..." class="text-input" />
+      <div class="modal-actions">
+        <button id="save-key-btn" class="btn-primary">Save Key</button>
+        <a href="https://console.groq.com/keys" target="_blank" class="btn-link">Get Free Key →</a>
+      </div>
+      <p id="key-status" class="key-status"></p>
+    </div>
+  </div>
+
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="brand">
+      <div class="brand-icon">⚕</div>
+      <div>
+        <div class="brand-name">MedRef</div>
+        <div class="brand-sub">Clinical AI Reference</div>
+      </div>
+    </div>
+
+    <div class="layer-nav">
+      <div class="nav-label">WORKFLOW</div>
+      <div class="layer-item active" data-layer="1" id="nav-l1">
+        <span class="layer-num">01</span>
+        <span>Differential Diagnosis</span>
+      </div>
+      <div class="layer-item" data-layer="2" id="nav-l2">
+        <span class="layer-num">02</span>
+        <span>Disease Comparison</span>
+      </div>
+      <div class="layer-item" data-layer="3" id="nav-l3">
+        <span class="layer-num">03</span>
+        <span>Precautions & Mgmt</span>
+      </div>
+      <div class="layer-item" data-layer="4" id="nav-l4">
+        <span class="layer-num">04</span>
+        <span>Medication Reference</span>
+      </div>
+    </div>
+
+    <div class="sidebar-footer">
+      <button id="settings-btn" class="sidebar-btn">⚙ Settings</button>
+      <button id="new-consult-btn" class="sidebar-btn accent">＋ New Consult</button>
+      <div class="disclaimer-mini">For licensed medical professionals only.</div>
+    </div>
+  </aside>
+
+  <!-- Main -->
+  <main class="main">
+    <!-- Header -->
+    <header class="topbar">
+      <div class="topbar-left">
+        <div class="layer-badge" id="layer-badge">Layer 1 · Differential Diagnosis</div>
+      </div>
+      <div class="topbar-right">
+        <div class="status-dot" id="status-dot"></div>
+        <span id="status-text" class="status-text">Ready</span>
+      </div>
+    </header>
+
+    <!-- Chat Area -->
+    <div class="chat-area" id="chat-area">
+      <!-- Welcome Screen -->
+      <div class="welcome-screen" id="welcome-screen">
+        <div class="welcome-icon">⚕️</div>
+        <h1 class="welcome-title">MedRef Clinical Assistant</h1>
+        <p class="welcome-sub">AI-powered secondary reference for licensed clinicians. Describe a symptom cluster to begin differential diagnosis.</p>
+        <div class="quick-tips">
+          <div class="tip-card">
+            <div class="tip-icon">🔬</div>
+            <div class="tip-text"><strong>Start with symptoms</strong><br/>Describe the clinical presentation naturally</div>
+          </div>
+          <div class="tip-card">
+            <div class="tip-icon">⚖️</div>
+            <div class="tip-text"><strong>Compare differentials</strong><br/>Type "compare 1 and 3" to get a side-by-side</div>
+          </div>
+          <div class="tip-card">
+            <div class="tip-icon">💊</div>
+            <div class="tip-text"><strong>Drug lookup</strong><br/>Enter any medicine name for full clinical profile</div>
+          </div>
+        </div>
+        <div class="key-warning" id="key-warning">
+          ⚠️ No API key set. <button class="inline-link" id="key-warning-btn">Configure Groq key in Settings →</button>
+        </div>
+      </div>
+
+      <!-- Messages -->
+      <div id="messages"></div>
+    </div>
+
+    <!-- Input Area -->
+    <div class="input-area">
+      <div class="input-wrapper">
+        <textarea
+          id="user-input"
+          class="chat-input"
+          placeholder="Describe symptoms or enter a command (e.g. 'compare 1 and 2', medicine name)..."
+          rows="1"
+        ></textarea>
+        <button id="send-btn" class="send-btn">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+          </svg>
+        </button>
+      </div>
+      <div class="input-hint">MedRef is a reference tool, not a diagnostic system. All outputs require clinical validation.</div>
+    </div>
+  </main>
+
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>
