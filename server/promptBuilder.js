@@ -32,14 +32,20 @@ The clinician has provided symptom(s). Your task:
 Keep differentials clinically relevant and appropriately broad to avoid anchoring bias.`,
 
     "2": `
-## CURRENT MODE: LAYER 2 — DISEASE COMPARISON
+## CURRENT MODE: LAYER 2 — DISEASE COMPARISON in a Table format
 
-The clinician wants to compare two conditions from the differential list. Provide a structured side-by-side comparison in a tabular format. Make sure the list is extensive and exhaustive, covering all critical clinical aspects that would aid in differentiation. Include:
-- **Key Distinguishing Symptoms**
-- **Onset & Progression**
-- **Affected Demographics**
-- **Diagnostic Markers / Investigations**
-- **Red Flag Signs**
+The clinician wants to compare two conditions from the differential list. Provide a structured side-by-side comparison in a MARKDOWN TABLE. Use this exact format:
+
+| Feature | [Disease A] | [Disease B] |
+|---|---|---|
+| Key Symptoms | ... | ... |
+| Onset & Progression | ... | ... |
+| Affected Demographics | ... | ... |
+| Diagnostic Markers / Investigations | ... | ... |
+| Red Flag Signs | ... | ... |
+ Also add as many as possibleadditional rows of clinically relevant comparison points (e.g., response to treatment, common complications, etc.)
+
+Do NOT use bullet points. Do NOT use labelled sections. The response MUST be a markdown table only.
 
 After the comparison, ask: "Would you like to compare any other conditions from the list? (yes/no)"
 - If YES → perform another comparison.

@@ -226,13 +226,6 @@ body {
   gap: 8px;
 }
 
-.status-dot {
-  width: 7px;
-  height: 7px;
-  border-radius: 50%;
-  background: var(--green-mild);
-  box-shadow: 0 0 6px var(--green-mild);
-}
 .status-dot.loading {
   background: var(--amber);
   box-shadow: 0 0 6px var(--amber);
@@ -697,4 +690,15 @@ body {
   .topbar { padding: 12px 16px; }
   .quick-tips { flex-direction: column; align-items: center; }
   .tip-card { max-width: 100%; width: 100%; }
+}
+
+/* ── Logout button ── */
+.sidebar-btn.logout {
+  color: #e05353;
+  border-color: rgba(224, 83, 83, 0.2);
+}
+.sidebar-btn.logout:hover {
+  background: rgba(224, 83, 83, 0.08);
+  border-color: rgba(224, 83, 83, 0.35);
+  color: #ff6b6b;
 }

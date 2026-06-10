@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>MedRef — Sign In</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=JetBrains+Mono:wght@300;400;500&family=Outfit:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+  <link rel="stylesheet" href="css/auth.css" />
+</head>
+<body class="auth-body">
+
+  <div class="auth-container">
+
+    <!-- Brand -->
+    <div class="auth-brand">
+      <div class="auth-brand-icon">⚕</div>
+      <div class="auth-brand-name">MedRef</div>
+      <div class="auth-brand-sub">Clinical AI Reference</div>
+    </div>
+
+    <!-- Card -->
+    <div class="auth-card">
+
+      <!-- Tabs -->
+      <div class="auth-tabs">
+        <button class="auth-tab active" id="tab-login"  onclick="switchTab('login')">Sign In</button>
+        <button class="auth-tab"        id="tab-register" onclick="switchTab('register')">Register</button>
+      </div>
+
+      <!-- Login Form -->
+      <div id="form-login">
+        <div class="field-group">
+          <label class="field-label">Email</label>
+          <input id="login-email" type="email" class="field-input" placeholder="doctor@hospital.com" />
+        </div>
+        <div class="field-group">
+          <label class="field-label">Password</label>
+          <input id="login-password" type="password" class="field-input" placeholder="••••••••" />
+        </div>
+        <button class="auth-btn" id="login-btn" onclick="handleLogin()">Sign In</button>
+      </div>
+
+      <!-- Register Form -->
+      <div id="form-register" class="hidden">
+        <div class="field-group">
+          <label class="field-label">Full Name</label>
+          <input id="reg-name" type="text" class="field-input" placeholder="Dr. John Smith" />
+        </div>
+        <div class="field-group">
+          <label class="field-label">Email</label>
+          <input id="reg-email" type="email" class="field-input" placeholder="doctor@hospital.com" />
+        </div>
+        <div class="field-group">
+          <label class="field-label">Password</label>
+          <input id="reg-password" type="password" class="field-input" placeholder="Min. 6 characters" />
+        </div>
+        <div class="field-group">
+          <label class="field-label">Groq API Key</label>
+          <input id="reg-groqkey" type="password" class="field-input" placeholder="gsk_..." />
+          <span class="field-hint">
+            Get your free key at
+            <a href="https://console.groq.com/keys" target="_blank">console.groq.com</a>
+          </span>
+        </div>
+        <button class="auth-btn" id="register-btn" onclick="handleRegister()">Create Account</button>
+      </div>
+
+      <!-- Error / Status -->
+      <p id="auth-error" class="auth-error"></p>
+
+    </div>
+
+    <p class="auth-disclaimer">⚕️ For licensed medical professionals only.</p>
+  </div>
+
+  <script type="module">
+    import { loginUser, registerUser, onAuthChange } from "./js/auth.js";
+    import { saveGroqKey } from "./js/keyStore.js";
+
+    // If already logged in, go straight to app
+    onAuthChange((user) => {
+      if (user) window.location.href = "/";
+    });
+
+    // ── Tab switch ──────────────────────────────────────────────
+    window.switchTab = function(tab) {
+      document.getElementById("form-login").classList.toggle("hidden", tab !== "login");
+      document.getElementById("form-register").classList.toggle("hidden", tab !== "register");
+      document.getElementById("tab-login").classList.toggle("active", tab === "login");
+      document.getElementById("tab-register").classList.toggle("active", tab === "register");
+      clearError();
+    };
+
+    // ── Login ───────────────────────────────────────────────────
+    window.handleLogin = async function() {
+      const email    = document.getElementById("login-email").value.trim();
+      const password = document.getElementById("login-password").value;
+      const btn      = document.getElementById("login-btn");
+
+      if (!email || !password) return showError("Please fill in all fields.");
+
+      setLoading(btn, true, "Signing in...");
+      try {
+        await loginUser(email, password);
+        // onAuthChange will redirect to /
+      } catch (err) {
+        showError(friendlyError(err.code));
+        setLoading(btn, false, "Sign In");
+      }
+    };
+
+    // ── Register ────────────────────────────────────────────────
+    window.handleRegister = async function() {
+      const name     = document.getElementById("reg-name").value.trim();
+      const email    = document.getElementById("reg-email").value.trim();
+      const password = document.getElementById("reg-password").value;
+      const groqKey  = document.getElementById("reg-groqkey").value.trim();
+      const btn      = document.getElementById("register-btn");
+
+      if (!name || !email || !password || !groqKey) return showError("Please fill in all fields.");
+      if (!groqKey.startsWith("gsk_")) return showError("Groq API key must start with 'gsk_'.");
+      if (password.length < 6) return showError("Password must be at least 6 characters.");
+
+      setLoading(btn, true, "Creating account...");
+      try {
+        const cred = await registerUser(email, password, name);
+        await saveGroqKey(cred.user.uid, groqKey);
+        // onAuthChange will redirect
+      } catch (err) {
+        showError(friendlyError(err.code));
+        setLoading(btn, false, "Create Account");
+      }
+    };
+
+    // ── Helpers ─────────────────────────────────────────────────
+    function showError(msg) {
+      const el = document.getElementById("auth-error");
+      el.textContent = msg;
+      el.style.display = "block";
+    }
+    function clearError() {
+      const el = document.getElementById("auth-error");
+      el.textContent = "";
+      el.style.display = "none";
+    }
+    function setLoading(btn, loading, label) {
+      btn.disabled = loading;
+      btn.textContent = label;
+    }
+    function friendlyError(code) {
+      const map = {
+        "auth/user-not-found":       "No account found with this email.",
+        "auth/wrong-password":       "Incorrect password.",
+        "auth/email-already-in-use": "An account with this email already exists.",
+        "auth/invalid-email":        "Please enter a valid email address.",
+        "auth/weak-password":        "Password is too weak. Use at least 6 characters.",
+        "auth/too-many-requests":    "Too many attempts. Please try again later.",
+        "auth/invalid-credential":   "Invalid email or password.",
+      };
+      return map[code] || "Something went wrong. Please try again.";
+    }
+
+    // Enter key support
+    document.addEventListener("keydown", (e) => {
+      if (e.key !== "Enter") return;
+      const loginHidden = document.getElementById("form-login").classList.contains("hidden");
+      if (!loginHidden) handleLogin();
+      else handleRegister();
+    });
+  </script>
+
+</body>
+</html>
