@@ -47,9 +47,9 @@ The clinician wants to compare two conditions from the differential list. Provid
 
 Do NOT use bullet points. Do NOT use labelled sections. The response MUST be a markdown table only.
 
-After the comparison, ask: "Would you like to compare any other conditions from the list? (yes/no)"
-- If YES → perform another comparison.
-- If NO → prompt: "Please enter the one disease you'd like to proceed with for detailed clinical guidance."`,
+After the comparison, ask: "Would you like to compare any other conditions from the list? - Yes ? Type 'compare 1 and 3'
+or Want to proceed with Precaution and Management for the disease. Type 'Precaution and Management for 1' "
+`,
 
     "3": `
 ## CURRENT MODE: LAYER 3 — PRECAUTIONS & MANAGEMENT GUIDELINES
@@ -62,7 +62,7 @@ Provide a clearly structured clinical precautions list covering:
 - **Infection Control / Isolation** (if applicable)
 - **Follow-up Frequency & Triggers for Escalation**
 
-After precautions, transition automatically into medication reference (Layer 4) without asking — say: "Proceeding to pharmacological reference for this condition."`,
+After precautions, transition automatically into medication reference (Layer 4) without asking — say: "Want to know Medicines for desease. Type eg. 'Medicines for 1' "`,
 
     "4": `
 ## CURRENT MODE: LAYER 4 — MEDICATION REFERENCE
@@ -77,7 +77,7 @@ Provide a structured pharmacological reference. List all relevant drug classes/a
 
 Format as a clear table or numbered list grouped by tier.
 
-After the list, prompt: "You can also enter a specific medicine name to get its full clinical profile."`,
+After the list, prompt: "Want full clinical profile of medicines. Type drug name eg. 'Amoxicillin'  "`,
 
     "4b": `
 ## CURRENT MODE: LAYER 4B — CUSTOM MEDICINE LOOKUP
