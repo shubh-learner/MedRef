@@ -155,6 +155,59 @@ body {
 }
 .layer-item.active .layer-num { color: var(--teal); }
 
+/* ── Specialty group (Allopathy accordion) ── */
+.specialty-group {
+  margin-bottom: 4px;
+}
+
+.specialty-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 20px;
+  cursor: pointer;
+  color: var(--teal);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+  border-left: 2px solid var(--teal-dim);
+  background: var(--teal-glow);
+  transition: all 0.2s;
+  user-select: none;
+}
+
+.specialty-header:hover {
+  background: rgba(0, 201, 177, 0.18);
+}
+
+.specialty-icon {
+  font-size: 14px;
+}
+
+.specialty-name {
+  flex: 1;
+}
+
+.specialty-arrow {
+  font-size: 11px;
+  color: var(--teal-dim);
+  transition: transform 0.25s ease;
+  display: inline-block;
+}
+
+.specialty-arrow.open {
+  transform: rotate(90deg);
+}
+
+.specialty-items {
+  border-left: 2px solid rgba(0, 201, 177, 0.15);
+  margin-left: 20px;
+}
+
+.specialty-items .layer-item {
+  padding-left: 14px;
+}
+
 /* ======= SIDEBAR FOOTER ======= */
 .sidebar-footer {
   margin-top: auto;
@@ -295,6 +348,7 @@ body {
   flex-wrap: wrap;
   justify-content: center;
   margin-bottom: 28px;
+  max-width: 720px;
 }
 
 .tip-card {
@@ -307,9 +361,26 @@ body {
   padding: 16px 20px;
   max-width: 200px;
   text-align: left;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, background 0.2s, transform 0.15s;
+  cursor: pointer;
+  user-select: none;
 }
-.tip-card:hover { border-color: var(--border-strong); }
+.tip-card:hover {
+  border-color: var(--teal-dim);
+  background: var(--bg-hover);
+  transform: translateY(-2px);
+}
+.tip-card:active {
+  transform: translateY(0px);
+}
+.tip-card.active {
+  border-color: var(--teal);
+  background: var(--teal-glow);
+}
+.tip-card.active .tip-text strong {
+  color: var(--teal);
+}
+
 .tip-icon { font-size: 20px; }
 .tip-text { font-size: 12.5px; color: var(--text-secondary); line-height: 1.5; }
 .tip-text strong { color: var(--text-primary); display: block; margin-bottom: 4px; }
@@ -702,3 +773,30 @@ body {
   border-color: rgba(224, 83, 83, 0.35);
   color: #ff6b6b;
 }
+/* ── Left Workflow Panel ── */
+.workflow-panel {
+  width: 200px;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  padding: 16px 0;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+.workflow-panel::-webkit-scrollbar       { width: 3px; }
+.workflow-panel::-webkit-scrollbar-thumb { background: var(--border); }
+
+/* ── Left Workflow Panel ── */
+.workflow-panel {
+  width: 200px;
+  background: var(--surface);
+  border-right: 1px solid var(--border);
+  padding: 16px 0;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+.workflow-panel::-webkit-scrollbar       { width: 3px; }
+.workflow-panel::-webkit-scrollbar-thumb { background: var(--border); }

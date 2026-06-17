@@ -1,6 +1,6 @@
 /**
  * Builds the MedRef system prompt dynamically based on the current layer.
- * @param {string} layer - Current workflow layer (1-4b)
+ * @param {string} layer - Current workflow layer (1-5)
  * @param {object} context - Optional context (e.g., disease name, differential list)
  * @returns {string} - Full system prompt string
  */
@@ -79,8 +79,8 @@ Format as a clear table or numbered list grouped by tier.
 
 After the list, prompt: "Want full clinical profile of medicines. Type drug name eg. 'Amoxicillin'  "`,
 
-    "4b": `
-## CURRENT MODE: LAYER 4B — CUSTOM MEDICINE LOOKUP
+    "5": `
+## CURRENT MODE: LAYER 5 — CUSTOM MEDICINE LOOKUP
 ${context.medicine ? `Medicine requested: **${context.medicine}**` : ""}
 
 Provide a complete clinical drug profile:

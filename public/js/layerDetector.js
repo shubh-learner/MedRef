@@ -1,7 +1,7 @@
 /**
  * MedRef Layer Detector
  * Analyzes user input text to determine which workflow layer is active.
- * Returns the appropriate layer string: "1", "2", "3", "4", or "4b".
+ * Returns the appropriate layer string: "1", "2", "3", "4", or "5".
  */
 
 /**
@@ -13,25 +13,24 @@
 export function detectLayer(text, currentLayer, context) {
   const lower = text.toLowerCase().trim();
 
-  // ── Layer 4B: Specific medicine lookup ─────────────────────
-  // "metformin", "look up amoxicillin", "what about ibuprofen"
+  // ── Layer 5: Specific medicine lookup ─────────────────────
   if (
-    /^(look up|lookup|what about|tell me about|profile of|details of|info on)?\s*[a-z]+(cin|pril|olol|mab|vir|zole|mycin|cillin|pam|statin|sartan|dipine|tinib|mide|sone|ide|ine|one|ate|ile|an|ol)\b/i.test(text) &&
+    /(look up|lookup|what about|tell me about|profile of|details of|info on)/i.test(text) &&
     currentLayer === "4"
   ) {
     context.medicine = text.trim();
-    return "4b";
+    return "5";
   }
 
-  // Another medicine in 4b
-  if (currentLayer === "4b" && /(another medicine|look up|lookup)\s+/i.test(lower)) {
-    return "4b";
+  // Another medicine in 5
+  if (currentLayer === "5" && /(another medicine|look up|lookup)\s+/i.test(lower)) {
+    return "5";
   }
 
   // ── Layer 4: After selecting a disease for management ──────
   if (
     currentLayer === "3" &&
-    /(proceed|medication|drug|medicine|pharmacol|treatment|rx|prescri)/i.test(lower)
+    /(medicine for|go with|drug|medicine|pharmacol|treatment|rx|prescri)/i.test(lower)
   ) {
     return "4";
   }
@@ -39,7 +38,7 @@ export function detectLayer(text, currentLayer, context) {
   // ── Layer 3: User selects a single disease from differentials ─
   if (
     currentLayer === "2" &&
-    /^(no|proceed with|let's go with|use|select|choose|pick)\b/i.test(lower)
+    /^(no|proceed with|go with|use|select|choose|pick)\b/i.test(lower)
   ) {
     // "no" → stop comparing, move to layer 3
     if (/^no\b/i.test(lower)) {

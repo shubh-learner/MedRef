@@ -55,17 +55,39 @@
     <!-- Layer nav -->
     <div class="layer-nav">
       <div class="nav-label">WORKFLOW</div>
-      <div class="layer-item active" data-layer="1">
-        <span class="layer-num">01</span><span>Differential Diagnosis</span>
-      </div>
-      <div class="layer-item" data-layer="2">
-        <span class="layer-num">02</span><span>Disease Comparison</span>
-      </div>
-      <div class="layer-item" data-layer="3">
-        <span class="layer-num">03</span><span>Precautions & Mgmt</span>
-      </div>
-      <div class="layer-item" data-layer="4">
-        <span class="layer-num">04</span><span>Medication Reference</span>
+      <div class="specialty-group">
+        <div class="specialty-header" id="allopathy-header">
+          <span class="specialty-icon">💊</span>
+          <span class="specialty-name">Allopathy</span>
+          <span class="specialty-arrow" id="allopathy-arrow">▸</span>
+        </div>
+        <div class="specialty-items" id="allopathy-items" style="display:none;">
+          <div class="layer-item active" data-layer="1">
+            <span class="layer-num">01</span><span>Differential Diagnosis</span>
+          </div>
+          <div class="layer-item" data-layer="2">
+            <span class="layer-num">02</span><span>Disease Comparison</span>
+          </div>
+          <div class="layer-item" data-layer="3">
+            <span class="layer-num">03</span><span>Precautions & Mgmt</span>
+          </div>
+          <div class="layer-item" data-layer="4">
+            <span class="layer-num">04</span><span>Medication Reference</span>
+          </div>
+          <div class="layer-item" data-layer="5">
+            <span class="layer-num">05</span><span>Medicine Profile</span>
+          </div>
+        </div>
+
+        <div class="specialty-header" id="ayurveda-header">
+          <span class="specialty-icon">🌿</span>
+          <span class="specialty-name">Ayurveda</span>
+          <span class="specialty-arrow" id="ayurveda-arrow">▸</span>
+        </div>
+        <div class="specialty-items" id="ayurveda-items" style="display:none;">
+          <div class="layer-item active" data-layer="1">
+            <span class="layer-num">01</span><span>Differential Diagnosis</span>
+          </div>
       </div>
     </div>
 
@@ -81,7 +103,7 @@
   <main class="main">
     <header class="topbar">
       <div class="topbar-left">
-        <div class="layer-badge" id="layer-badge">Layer 1 · Differential Diagnosis</div>
+        <div class="layer-badge" id="layer-badge">Allopathy 💊 Layer 1 · Differential Diagnosis</div>
       </div>
       <div class="topbar-right">
         <div class="status-dot" id="status-dot"></div>
@@ -96,17 +118,26 @@
         <h1 class="welcome-title">MedRef Clinical Assistant</h1>
         <p class="welcome-sub">AI-powered secondary reference for licensed clinicians. Describe a symptom cluster to begin differential diagnosis.</p>
         <div class="quick-tips">
-          <div class="tip-card">
+          <div class="tip-card" data-layer="1" id="tip-1">
             <div class="tip-icon">🔬</div>
-            <div class="tip-text"><strong>Start with symptoms</strong><br/>Patient's Age, Gender, Symptoms, Symptoms duration, Test results, medication ..</div>
+            <div class="tip-text"><strong>Differential Diagnosis</strong><br/>Patient's age, Gender, Symptoms, Duration, Test results, Allergic To</div>
           </div>
-          <div class="tip-card">
+          <div class="tip-card" data-layer="2" id="tip-2">
             <div class="tip-icon">⚖️</div>
-            <div class="tip-text"><strong>Compare differentials</strong><br/>Type "compare 1 and 3" for side-by-side</div>
+            <div class="tip-text"><strong>Disease Comparison</strong><br/>Compare: eg. "Compare migraine and headache" or "Compare 1 and 3"</div>
           </div>
-          <div class="tip-card">
+          <div class="tip-card" data-layer="3" id="tip-3">
+            <div class="tip-icon">🛡️</div>
+            <div class="tip-text"><strong>Precautions & Management</strong><br/>Just type the Disease name eg. "migraine" or "Go with 3"</div>
+          </div>
+
+          <div class="tip-card" data-layer="4" id="tip-4">
             <div class="tip-icon">💊</div>
-            <div class="tip-text"><strong>Drug lookup</strong><br/>Enter any medicine name for full profile</div>
+            <div class="tip-text"><strong>Medication Reference</strong><br/>Just type the Disease name eg. "migraine" or "Go with 3"</div>
+          </div>
+          <div class="tip-card" data-layer="5" id="tip-5">
+            <div class="tip-icon">🔎</div>
+            <div class="tip-text"><strong>Medicine Profile</strong><br/>Type the medicine name eg. "ibuprofen"</div>
           </div>
         </div>
       </div>

@@ -94,6 +94,46 @@ onAuthChange(async (user) => {
   document.querySelectorAll(".layer-item").forEach((item) => {
     item.addEventListener("click", () => setLayer(item.dataset.layer));
   });
+  // Tip card clicks on welcome screen
+  document.querySelectorAll(".tip-card").forEach((card) => {
+    card.addEventListener("click", () => {
+      const layer = card.dataset.layer;
+      if (!layer) return;
+      setLayer(layer);
+      setActiveTipCard(layer);
+      chatInput.focus();
+    });
+  });
+
+  // Allopathy accordion toggle
+  const allopathyHeader = document.getElementById("allopathy-header");
+  const allopathyItems  = document.getElementById("allopathy-items");
+  const allopathyArrow  = document.getElementById("allopathy-arrow");
+
+  // Expand by default on load
+  allopathyItems.style.display = "block";
+  allopathyArrow.classList.add("open");
+
+  allopathyHeader.addEventListener("click", () => {
+    const isOpen = allopathyItems.style.display !== "none";
+    allopathyItems.style.display = isOpen ? "none" : "block";
+    allopathyArrow.classList.toggle("open", !isOpen);
+  });
+
+
+  // Ayurveda accordion toggle
+  const ayurvedaHeader = document.getElementById("ayurveda-header");
+  const ayurvedaItems  = document.getElementById("ayurveda-items");
+  const ayurvedaArrow  = document.getElementById("ayurveda-arrow");
+
+  // Expand by default on load
+
+  ayurvedaHeader.addEventListener("click", () => {
+    const isOpen = ayurvedaItems.style.display !== "none";
+    ayurvedaItems.style.display = isOpen ? "none" : "block";
+    ayurvedaArrow.classList.toggle("open", !isOpen);
+  });
+
 })();
 
 // ── Settings ───────────────────────────────────────────────────
@@ -156,15 +196,22 @@ function startNewConsult() {
 function setLayer(layer) {
   state.currentLayer = layer;
   const labels = {
-    "1":  "Layer 1 · Differential Diagnosis",
-    "2":  "Layer 2 · Disease Comparison",
-    "3":  "Layer 3 · Precautions & Management",
-    "4":  "Layer 4 · Medication Reference",
-    "4b": "Layer 4B · Medicine Lookup",
+    "1":  "Allopathy 💊 Layer 1 · Differential Diagnosis",
+    "2":  "Allopathy 💊 Layer 2 · Disease Comparison",
+    "3":  "Allopathy 💊 Layer 3 · Precautions & Management",
+    "4":  "Allopathy 💊 Layer 4 · Medication Reference",
+    "5":  "Allopathy 💊 Layer 5 · Medicine Profile",
   };
   layerBadgeEl.textContent = labels[layer] || labels["1"];
   document.querySelectorAll(".layer-item").forEach((el) => el.classList.remove("active"));
   const active = document.querySelector(`.layer-item[data-layer="${layer}"]`);
+  if (active) active.classList.add("active");
+  setActiveTipCard(layer);
+}
+
+function setActiveTipCard(layer) {
+  document.querySelectorAll(".tip-card").forEach((c) => c.classList.remove("active"));
+  const active = document.querySelector(`.tip-card[data-layer="${layer}"]`);
   if (active) active.classList.add("active");
 }
 
