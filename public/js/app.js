@@ -148,7 +148,10 @@ function renderTipCards(system) {
       // Re-render cards for selected system
       renderTipCards(state.system);
 
-      // Reset to layer 1
+      state.history = [];
+      state.context = {};
+      messagesEl.innerHTML = "";
+      welcomeEl.style.display = "flex";
       setLayer("1");
     });
   });
@@ -243,14 +246,22 @@ function startNewConsult() {
 // ── Layer ──────────────────────────────────────────────────────
 function setLayer(layer) {
   state.currentLayer = layer;
-  const labels = {
-    "1":  "Allopathy 💊 Layer 1 · Differential Diagnosis",
-    "2":  "Allopathy 💊 Layer 2 · Disease Comparison",
-    "3":  "Allopathy 💊 Layer 3 · Precautions & Management",
-    "4":  "Allopathy 💊 Layer 4 · Medication Reference",
-    "5":  "Allopathy 💊 Layer 5 · Medicine Profile",
+    const labels = {
+    allopathy: {
+      "1":  "Allopathy 💊 · Differential Diagnosis",
+      "2":  "Allopathy 💊 · Disease Comparison",
+      "3":  "Allopathy 💊 · Precautions & Management",
+      "4":  "Allopathy 💊 · Medication Reference",
+      "5":  "Allopathy 💊 · Medicine Profile",
+    },
+    ayurveda: {
+      "1":  "Ayurveda 🌿 · Rogi Parikshā & Nidāna",
+      "2":  "Ayurveda 🌿 · Pathya-Apathya & Chikitsā",
+      "3":  "Ayurveda 🌿 · Aushadhi Chikitsā",
+    },
   };
-  layerBadgeEl.textContent = labels[layer] || labels["1"];
+  const systemLabels = labels[state.system] || labels["allopathy"];
+  layerBadgeEl.textContent = labels[state.system]?.[layer] || labels.allopathy["1"];
   document.querySelectorAll(".layer-item").forEach((el) => el.classList.remove("active"));
   const active = document.querySelector(`.layer-item[data-layer="${layer}"]`);
   if (active) active.classList.add("active");
@@ -306,6 +317,7 @@ async function handleSend() {
         history: state.history.slice(-14),
         layer:   state.currentLayer,
         context: state.context,
+        system:  state.system,
       }),
     });
     const data = await res.json();

@@ -3,7 +3,8 @@ const cors    = require("cors");
 const path    = require("path");
 const https   = require("https");
 const { callGroq }    = require("./groq");
-const { buildPrompt } = require("./promptBuilder");
+const { buildPrompt }         = require("./promptBuilder");
+const { buildAyurvedaPrompt } = require("./promptBuilderAyurveda");
 
 const app  = express();
 const PORT = process.env.PORT || 3000;
@@ -50,7 +51,10 @@ app.post("/api/chat", async (req, res) => {
       return res.status(401).json({ error: "Invalid Groq API key format." });
     }
 
-    const systemPrompt = buildPrompt(layer, context);
+    const system       = req.body.system || "allopathy";
+    const systemPrompt = system === "ayurveda"
+      ? buildAyurvedaPrompt(layer, context)
+      : buildPrompt(layer, context);
     const reply = await callGroq(groqKey, message, history || [], systemPrompt);
 
     res.json({ reply });
