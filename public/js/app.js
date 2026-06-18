@@ -129,6 +129,7 @@ function renderTipCards(system) {
     if (e.target === settingsModal) closeSettings();
   });
 
+  // makes every element with the class .layer-item clickable.
   document.querySelectorAll(".layer-item").forEach((item) => {
     item.addEventListener("click", () => setLayer(item.dataset.layer));
   });
@@ -147,6 +148,21 @@ function renderTipCards(system) {
 
       // Re-render cards for selected system
       renderTipCards(state.system);
+
+      const allopathyGroup = document.getElementById("allopathy-group");
+      const ayurvedaGroup  = document.getElementById("ayurveda-group");
+
+      if (state.system === "allopathy") {
+		    allopathyGroup.style.display = "block";
+        ayurvedaGroup.style.display  = "none";
+        document.getElementById("allopathy-items").style.display = "block";
+        document.getElementById("allopathy-arrow").classList.add("open");   
+      } else {
+		    allopathyGroup.style.display = "none";
+        ayurvedaGroup.style.display  = "block";
+        document.getElementById("ayurveda-items").style.display = "block";
+        document.getElementById("ayurveda-arrow").classList.add("open"); 
+      }
 
       state.history = [];
       state.context = {};
@@ -177,8 +193,8 @@ function renderTipCards(system) {
   const ayurvedaItems  = document.getElementById("ayurveda-items");
   const ayurvedaArrow  = document.getElementById("ayurveda-arrow");
 
-  // Expand by default on load
-
+  // Expand when clicked
+  
   ayurvedaHeader.addEventListener("click", () => {
     const isOpen = ayurvedaItems.style.display !== "none";
     ayurvedaItems.style.display = isOpen ? "none" : "block";
@@ -263,7 +279,7 @@ function setLayer(layer) {
   const systemLabels = labels[state.system] || labels["allopathy"];
   layerBadgeEl.textContent = labels[state.system]?.[layer] || labels.allopathy["1"];
   document.querySelectorAll(".layer-item").forEach((el) => el.classList.remove("active"));
-  const active = document.querySelector(`.layer-item[data-layer="${layer}"]`);
+  const active = document.querySelector(`.layer-item[data-layer="${layer}"][data-system="${state.system}"]`);
   if (active) active.classList.add("active");
   setActiveTipCard(layer);
 }
