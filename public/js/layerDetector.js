@@ -15,7 +15,7 @@ export function detectLayer(text, currentLayer, context) {
 
   // ── Layer 5: Specific medicine lookup ─────────────────────
   if (
-    /(look up|lookup|what about|tell me about|profile of|details of|info on)/i.test(text) &&
+    /(look up|lookup|what about|tell me about|profile of|details of|info on)?\s*[a-z]+\b/i.test(text) &&
     currentLayer === "4"
   ) {
     context.medicine = text.trim();

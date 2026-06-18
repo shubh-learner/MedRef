@@ -17,6 +17,7 @@ const state = {
   isLoading:    false,
   groqKey:      null,
   user:         null,
+  system:       "allopathy",
 };
 
 // ── DOM refs ───────────────────────────────────────────────────
@@ -69,6 +70,43 @@ onAuthChange(async (user) => {
   }
 });
 
+// Cards config per system
+const SYSTEM_CARDS = {
+  allopathy: [
+    { layer: "1",  icon: "🔬", title: "Differential Diagnosis",    desc: "Patient's age, Gender, Symptoms, Duration, Test results, Allergic To" },
+    { layer: "2",  icon: "⚖️", title: "Disease Comparison",        desc: "Compare: eg. \"Compare migraine and headache\" or \"Compare 1 and 3\"" },
+    { layer: "3",  icon: "🛡️", title: "Precautions & Management",  desc: "Just type the Disease name eg. \"migraine\" or \"Go with 3\"" },
+    { layer: "4",  icon: "💊", title: "Medication Reference",       desc: "Just type the Disease name eg. \"migraine\" or \"Go with 3\"" },
+    { layer: "5", icon: "🔎", title: "Medicine Profile",           desc: "Type the medicine name eg. \"ibuprofen\"" },
+  ],
+  ayurveda: [
+    { layer: "1",  icon: "🔬", title: "ROGI PARIKSHĀ & NIDĀNA",    desc: "Describe symptoms to get Ayurvedic differentials" },
+    { layer: "2",  icon: "🛡️", title: "PATHYA-APATHYA & CHIKITSĀ SŪTRA",  desc: "Ayurvedic management & lifestyle guidance" },
+    { layer: "3", icon: "🌿", title: "AUSHADHI CHIKITSĀ",           desc: "Full profile of an Ayurvedic medicine" },
+  ],
+};
+
+function renderTipCards(system) {
+  const container = document.querySelector(".quick-tips");
+  container.innerHTML = "";
+
+  SYSTEM_CARDS[system].forEach((card) => {
+    const el = document.createElement("div");
+    el.className = "tip-card";
+    el.dataset.layer = card.layer;
+    el.innerHTML = `
+      <div class="tip-icon">${card.icon}</div>
+      <div class="tip-text"><strong>${card.title}</strong><br/>${card.desc}</div>
+    `;
+    el.addEventListener("click", () => {
+      setLayer(card.layer);
+      setActiveTipCard(card.layer);
+      chatInput.focus();
+    });
+    container.appendChild(el);
+  });
+}
+
 // ── Init UI ────────────────────────────────────────────────────
 (function initUI() {
   chatInput.addEventListener("input", () => {
@@ -94,14 +132,24 @@ onAuthChange(async (user) => {
   document.querySelectorAll(".layer-item").forEach((item) => {
     item.addEventListener("click", () => setLayer(item.dataset.layer));
   });
-  // Tip card clicks on welcome screen
-  document.querySelectorAll(".tip-card").forEach((card) => {
-    card.addEventListener("click", () => {
-      const layer = card.dataset.layer;
-      if (!layer) return;
-      setLayer(layer);
-      setActiveTipCard(layer);
-      chatInput.focus();
+  
+  // Render default system cards on load
+  renderTipCards(state.system);
+
+  // System selector buttons
+  document.querySelectorAll(".system-btn").forEach((btn) => {
+    btn.addEventListener("click", () => {
+      state.system = btn.dataset.system;
+
+      // Toggle active class on buttons
+      document.querySelectorAll(".system-btn").forEach((b) => b.classList.remove("active"));
+      btn.classList.add("active");
+
+      // Re-render cards for selected system
+      renderTipCards(state.system);
+
+      // Reset to layer 1
+      setLayer("1");
     });
   });
 
