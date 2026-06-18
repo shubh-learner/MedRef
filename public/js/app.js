@@ -300,7 +300,7 @@ function setStatus(type, message) {
 function showKeyBanner(hasKey) {
   if (!keyBanner) return;
   keyBanner.className = "key-banner visible " + (hasKey ? "ok" : "missing");
-  keyBanner.innerHTML = hasKey ? "✓ Groq key active" : "⚠ Set your Groq key";
+  keyBanner.innerHTML = hasKey ? "✓ Secret Code active" : "⚠ Set your Secret Code";
   keyBanner.onclick   = hasKey ? null : openSettings;
 }
 
