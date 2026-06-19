@@ -58,7 +58,7 @@ onAuthChange(async (user) => {
     if (key) {
       state.groqKey = key;
       showKeyBanner(true);
-      setStatus("", "Made with ❤️ by Shubh Arya");
+      setStatus("", "Made with ❤️ Shubh Arya");
     } else {
       showKeyBanner(false);
       setStatus("error", "No API key");
@@ -123,6 +123,7 @@ function renderTipCards(system) {
   document.getElementById("modal-close").addEventListener("click", closeSettings);
   document.getElementById("save-key-btn").addEventListener("click", saveKey);
   document.getElementById("new-consult-btn").addEventListener("click", startNewConsult);
+  document.getElementById("new-chat-btn").addEventListener("click", startNewConsult);
   document.getElementById("logout-btn").addEventListener("click", handleLogout);
 
   settingsModal.addEventListener("click", (e) => {
@@ -234,7 +235,7 @@ async function saveKey() {
     keyStatus.textContent = "✓ Key saved to your account.";
     keyStatus.className   = "key-status success";
     showKeyBanner(true);
-    setStatus("", "Made with ❤️ by Shubh Arya");
+    setStatus("", "Made with ❤️ Shubh Arya");
     setTimeout(closeSettings, 1200);
   } catch (err) {
     keyStatus.textContent = "Save failed. Check Firestore security rules.";
@@ -346,7 +347,7 @@ async function handleSend() {
     if (state.currentLayer === "3" && !state.context.disease) {
       state.context.disease = text.replace(/^proceed with\s*/i, "").trim();
     }
-    setStatus("", "Made with ❤️ by Shubh Arya");
+    setStatus("", "Made with ❤️ Shubh Arya");
   } catch (err) {
     typingEl.remove();
     appendError(err.message);

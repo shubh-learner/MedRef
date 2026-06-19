@@ -296,7 +296,7 @@ body {
 
 .status-text {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: 8px;
   color: var(--text-muted);
 }
 
@@ -508,7 +508,7 @@ body {
 .message-bubble p { margin-bottom: 8px; }
 .message-bubble p:last-child { margin-bottom: 0; }
 
-.message-bubble strong { color: var(--text-primary); font-weight: 600; }
+.message-bubble strong { color: var(--teal); font-weight: 600; }
 .message-bubble em { color: var(--text-secondary); font-style: italic; }
 
 .message-bubble ul, .message-bubble ol {
@@ -658,6 +658,41 @@ body {
 .send-btn:hover { background: #00e5cc; transform: scale(1.05); }
 .send-btn:active { transform: scale(0.96); }
 .send-btn:disabled { background: var(--bg-hover); color: var(--text-muted); cursor: not-allowed; transform: none; }
+
+/* ── New chat button inside input ── */
+.new-chat-btn {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  padding: 6px 10px;
+  background: none;
+  border: none;
+  border-radius: var(--radius-sm);
+  color: var(--teal);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 500;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: all 0.2s;
+  white-space: nowrap;
+}
+
+.new-chat-btn:hover {
+  background: var(--bg-hover);
+  color: var(--teal);
+}
+
+.new-chat-btn svg {
+  flex-shrink: 0;
+}
+
+.input-divider {
+  width: 1px;
+  height: 20px;
+  background: var(--border);
+  flex-shrink: 0;
+}
 
 .input-hint {
   font-size: 10.5px;

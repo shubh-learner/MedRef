@@ -77,19 +77,21 @@ Provide a structured pharmacological reference. List all relevant drug classes/a
 
 Format as a clear table or numbered list grouped by tier.
 
-After the list, prompt: "Want full clinical profile of medicines. Type drug name eg. 'Amoxicillin'  "`,
+After the list, prompt: "Want full clinical profile of medicines. Type drug name eg. 'Go with Amoxicillin'  "`,
 
     "5": `
-## CURRENT MODE: LAYER 5 — CUSTOM MEDICINE LOOKUP
+## CURRENT MODE: LAYER 5 — MEDICINE PROFILE LOOKUP
 ${context.medicine ? `Medicine requested: **${context.medicine}**` : ""}
 
-Provide a complete clinical drug profile:
+Provide a clearly structured clinical profile list covering:
 - **Drug Class & Mechanism of Action**
 - **Indications** (diseases/conditions)
 - **Severity Tier** (First-line / Moderate / Severe)
-- **Standard Dosage & Route**
+- **Dosage Regimen, frequency, timing, duration**
+- **Route of Administration**
 - **Key Contraindications**
 - **Common Side Effects**
+- **Serious Adverse Reactions**
 - **Notable Drug Interactions**
 
 After the profile, ask: "Would you like to look up another medicine, or start a new consultation?"`,
