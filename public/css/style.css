@@ -173,6 +173,7 @@ body {
   border-left: 2px solid var(--teal-dim);
   background: var(--teal-glow);
   transition: all 0.2s;
+  -webkit-user-select: none;
   user-select: none;
 }
 
@@ -397,6 +398,7 @@ body {
   text-align: left;
   transition: border-color 0.2s, background 0.2s, transform 0.15s;
   cursor: pointer;
+  -webkit-user-select: none;
   user-select: none;
 }
 .tip-card:hover {
@@ -711,6 +713,7 @@ body {
   align-items: center;
   justify-content: center;
   z-index: 999;
+  -webkit-backdrop-filter: blur(4px);
   backdrop-filter: blur(4px);
 }
 .modal-overlay.hidden { display: none; }
@@ -869,3 +872,81 @@ body {
 }
 .workflow-panel::-webkit-scrollbar       { width: 3px; }
 .workflow-panel::-webkit-scrollbar-thumb { background: var(--border); }
+
+/* ── Rogi Pariksha Form Modal ── */
+.rogi-modal-box {
+  width: 580px;
+  max-width: 95vw;
+  max-height: 88vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.rogi-form-body {
+  overflow-y: auto;
+  padding: 6px 2px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  flex: 1;
+}
+
+.rogi-form-body::-webkit-scrollbar { width: 3px; }
+.rogi-form-body::-webkit-scrollbar-thumb { background: var(--border-strong); }
+
+.form-row { display: flex; flex-direction: column; }
+
+.form-group { display: flex; flex-direction: column; gap: 5px; }
+
+.select-input {
+  width: 100%;
+  padding: 10px 14px;
+  background: var(--bg-input);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  font-size: 13px;
+  outline: none;
+  cursor: pointer;
+  transition: border-color 0.2s;
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%238a9ab5' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'%3E%3C/polyline%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 32px;
+}
+
+.select-input:focus { border-color: var(--teal-dim); }
+
+.select-input option {
+  background: var(--bg-surface);
+  color: var(--text-primary);
+}
+
+.rogi-form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  flex-shrink: 0;
+}
+
+.btn-secondary {
+  padding: 9px 20px;
+  background: var(--bg-card);
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.btn-secondary:hover {
+  background: var(--bg-hover);
+  color: var(--text-primary);
+}

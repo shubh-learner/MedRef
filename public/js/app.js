@@ -35,6 +35,7 @@ const userNameEl    = document.getElementById("user-name");
 const userEmailEl   = document.getElementById("user-email");
 const userAvatarEl  = document.getElementById("user-avatar");
 const keyBanner     = document.getElementById("key-banner");
+const rogiModal     = document.getElementById("rogi-modal");
 
 // ── Boot: Firebase auth guard ──────────────────────────────────
 onAuthChange(async (user) => {
@@ -80,7 +81,7 @@ const SYSTEM_CARDS = {
     { layer: "5", icon: "🔎", title: "Medicine Profile",           desc: "Type the medicine name eg. \"ibuprofen\"" },
   ],
   ayurveda: [
-    { layer: "1",  icon: "🔬", title: "ROGI PARIKSHĀ & NIDĀNA",    desc: "Describe symptoms to get Ayurvedic differentials" },
+    { layer: "1",  icon: "🔬", title: "ROGI PARIKSHĀ & NIDĀNA",    desc: "CLICK THIS CARD to start Ayurvedic diagnosis" },
     { layer: "2",  icon: "🛡️", title: "PATHYA-APATHYA & CHIKITSĀ SŪTRA",  desc: "Ayurvedic management & lifestyle guidance" },
     { layer: "3", icon: "🌿", title: "AUSHADHI CHIKITSĀ",           desc: "Full profile of an Ayurvedic medicine" },
   ],
@@ -99,6 +100,13 @@ function renderTipCards(system) {
       <div class="tip-text"><strong>${card.title}</strong><br/>${card.desc}</div>
     `;
     el.addEventListener("click", () => {
+      // Open Rogi form for Ayurveda Layer 1
+      if (state.system === "ayurveda" && card.layer === "1") {
+        setLayer("1");
+        setActiveTipCard("1");
+        openRogiForm();
+        return;
+      }
       setLayer(card.layer);
       setActiveTipCard(card.layer);
       chatInput.focus();
@@ -125,6 +133,14 @@ function renderTipCards(system) {
   document.getElementById("new-consult-btn").addEventListener("click", startNewConsult);
   document.getElementById("new-chat-btn").addEventListener("click", startNewConsult);
   document.getElementById("logout-btn").addEventListener("click", handleLogout);
+
+  // Rogi Pariksha form
+  document.getElementById("rogi-modal-close").addEventListener("click", closeRogiForm);
+  document.getElementById("rogi-cancel-btn").addEventListener("click",  closeRogiForm);
+  document.getElementById("rogi-submit-btn").addEventListener("click",  submitRogiForm);
+  rogiModal.addEventListener("click", (e) => {
+    if (e.target === rogiModal) closeRogiForm();
+  });
 
   settingsModal.addEventListener("click", (e) => {
     if (e.target === settingsModal) closeSettings();
@@ -259,6 +275,46 @@ function startNewConsult() {
   setLayer("1");
   chatInput.value = ""; chatInput.style.height = "auto";
 }
+
+// ── Rogi Pariksha Form ─────────────────────────────────────────
+function openRogiForm() {
+  // Clear all fields
+  ["rp-age-gender","rp-vikriti","rp-ahara","rp-vihara","rp-desha","rp-kala"]
+    .forEach(id => document.getElementById(id).value = "");
+  ["rp-prakriti","rp-agni","rp-koshtha","rp-bala","rp-sattva"]
+    .forEach(id => document.getElementById(id).selectedIndex = 0);
+  rogiModal.classList.remove("hidden");
+}
+
+function closeRogiForm() {
+  rogiModal.classList.add("hidden");
+}
+
+function submitRogiForm() {
+  const get = (id) => document.getElementById(id).value.trim() || "Not specified";
+
+  const formText = `Rogi Parikshā (Patient Intake):
+1. Age & Gender: ${get("rp-age-gender")}
+2. Prakriti (Constitution): ${get("rp-prakriti")}
+3. Vikṛiti (Symptoms): ${get("rp-vikriti")}
+4. Āhāra Habits (Diet): ${get("rp-ahara")}
+5. Vihāra (Lifestyle): ${get("rp-vihara")}
+6. Jatharagni Status: ${get("rp-agni")}
+7. Koshtha (Bowel Habits): ${get("rp-koshtha")}
+8. Bala (Physical Strength): ${get("rp-bala")}
+9. Sattva (Mental Clarity): ${get("rp-sattva")}
+10. Desha (Location): ${get("rp-desha")}
+11. Kāla (Seasonal Influence): ${get("rp-kala")}
+
+Please perform a complete Rogi Parikshā and Vyādhi Nirṇaya based on the above.`;
+
+  closeRogiForm();
+
+  // Inject into chat input and trigger send
+  chatInput.value = formText;
+  handleSend();
+}
+
 
 // ── Layer ──────────────────────────────────────────────────────
 function setLayer(layer) {

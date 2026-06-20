@@ -168,7 +168,7 @@
         <div class="input-divider"></div>
         <textarea id="user-input" class="chat-input" rows="1"
           placeholder="Type here ..."></textarea>
-        <button id="send-btn" class="send-btn">
+        <button id="send-btn" class="send-btn" title="Send Message" aria-label="Send Message">
           <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
             <line x1="22" y1="2" x2="11" y2="13"></line>
             <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
@@ -181,4 +181,128 @@
 
   <script type="module" src="js/app.js"></script>
 </body>
+<!-- Rogi Pariksha Form Modal -->
+<div id="rogi-modal" class="modal-overlay hidden">
+  <div class="modal-box rogi-modal-box">
+    <div class="modal-header">
+      <span class="modal-title">🌿 Rogi Parikshā — Patient Intake Form (11 Questions)</span>
+      <button id="rogi-modal-close" class="icon-btn">✕</button>
+    </div>
+    <div class="rogi-form-body">
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="input-label">1. Age & Gender</label>
+          <input type="text" id="rp-age-gender" class="text-input" placeholder="e.g. 45 years, Male" />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="input-label">2. Prakriti (Constitution)</label>
+          <select id="rp-prakriti" class="select-input">
+            <option value="">-- Select Prakriti --</option>
+            <option value="Vata">Vāta</option>
+            <option value="Pitta">Pitta</option>
+            <option value="Kapha">Kapha</option>
+            <option value="Vata-Pitta">Vāta-Pitta</option>
+            <option value="Pitta-Kapha">Pitta-Kapha</option>
+            <option value="Vata-Kapha">Vāta-Kapha</option>
+            <option value="Tridoshic">Tridoshic (Sama)</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="input-label">3. Vikṛiti — Symptoms (list all)</label>
+          <input type="text" id="rp-vikriti" class="text-input" placeholder="e.g. bloating, constipation, fatigue, headache" />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="input-label">4. Āhāra Habits (Diet)</label>
+          <input type="text" id="rp-ahara" class="text-input" placeholder="e.g. mostly spicy food, skips meals, heavy dinner" />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="input-label">5. Vihāra (Lifestyle — sleep, exercise, stress)</label>
+          <input type="text" id="rp-vihara" class="text-input" placeholder="e.g. 5 hrs sleep, sedentary, high stress job" />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="input-label">6. Jatharagni Status</label>
+          <select id="rp-agni" class="select-input">
+            <option value="">-- Select Agni --</option>
+            <option value="Sama Agni (Balanced)">Sama Agni — Balanced</option>
+            <option value="Manda Agni (Weak)">Manda Agni — Weak / Slow</option>
+            <option value="Tikshna Agni (Excessive)">Tīkshṇa Agni — Excessive / Sharp</option>
+            <option value="Vishama Agni (Irregular)">Vishama Agni — Irregular</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="input-label">7. Koshtha (Bowel Habits)</label>
+          <select id="rp-koshtha" class="select-input">
+            <option value="">-- Select Koshtha --</option>
+            <option value="Mrudu Koshtha (Loose/Soft)">Mṛdu — Loose / Soft</option>
+            <option value="Krura Koshtha (Constipated)">Krūra — Constipated / Hard</option>
+            <option value="Madhya Koshtha (Balanced)">Madhya — Balanced</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="input-label">8. Bala (Physical Strength)</label>
+          <select id="rp-bala" class="select-input">
+            <option value="">-- Select Bala --</option>
+            <option value="Pravara Bala (Strong)">Pravara — Strong</option>
+            <option value="Madhyama Bala (Average)">Madhyama — Average</option>
+            <option value="Avara Bala (Weak)">Avara — Weak</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="input-label">9. Sattva (Mental Clarity)</label>
+          <select id="rp-sattva" class="select-input">
+            <option value="">-- Select Sattva --</option>
+            <option value="Pravara Sattva (Courageous, Stable)">Pravara — Courageous, Stable</option>
+            <option value="Madhyama Sattva (Moderate)">Madhyama — Moderate</option>
+            <option value="Avara Sattva (Fearful, Anxious)">Avara — Fearful, Anxious</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="input-label">10. Desha (Geographical Location)</label>
+          <input type="text" id="rp-desha" class="text-input" placeholder="e.g. Mumbai, coastal humid region" />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="input-label">11. Kāla (Seasonal Influence)</label>
+          <input type="text" id="rp-kala" class="text-input" placeholder="e.g. Winter, Shishira Ritu, symptoms worse in cold" />
+        </div>
+      </div>
+
+    </div>
+
+    <div class="rogi-form-actions">
+      <button id="rogi-cancel-btn" class="btn-secondary">Cancel</button>
+      <button id="rogi-submit-btn" class="btn-primary">Submit for Parikshā →</button>
+    </div>
+  </div>
+</div>
 </html>

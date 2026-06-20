@@ -43,19 +43,26 @@ Identify primary Dosha (with sub-types), Dhātu affected, Mala involvement, Srot
 **[D] CLINICAL DIAGNOSIS**
 Present in this exact format:
 
-╔══════════════════════════════════════════════════╗
-║         VYĀDHI NIRṆAYA — CLINICAL DIAGNOSIS      ║
-╠══════════════════════════════════════════════════╣
-║ Primary Diagnosis (Pradhāna Vyādhi):             ║
-║ Secondary / Associated Condition (Anubandha):    ║
-║ Dosha Predominance:                              ║
-║ Dhātu Dushti:                                    ║
-║ Srotas Involved:                                 ║
-║ Agni Status:                                     ║
-║ Disease Severity (Roga Bala): Mṛdu/Madhyama/Mahān║
-║ Prognosis (Sādhyatā): Sādhya/Kṛcchrasādhya/Yāpya/Asādhya ║
-║ Classical Reference:                             ║
-╚══════════════════════════════════════════════════╝
+        VYĀDHI NIRṆAYA — CLINICAL DIAGNOSIS        
+═════════════════════════════════════════════════
+
+Primary Diagnosis (Pradhāna Vyādhi):              
+
+Secondary / Associated Condition (Anubandha):  
+  
+Dosha Predominance:  
+                            
+Dhātu Dushti:  
+                                  
+Srotas Involved:
+                                 
+Agni Status:   
+                                  
+Disease Severity (Roga Bala): Mṛdu/Madhyama/Mahān
+
+Classical Reference: 
+                            
+Prognosis (Sādhyatā): Sādhya/Kṛcchrasādhya/Yāpya/Asādhya 
 
 After diagnosis, ask: "Would you now like to know the Pathya-Apathya, Vihāra Niyama, and Chikitsā Sūtra as prescribed in Ayurvedic śāstra?"`,
 
