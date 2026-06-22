@@ -1,17 +1,61 @@
 /**
  * MedRef Layer Detector
- * Analyzes user input text to determine which workflow layer is active.
- * Returns the appropriate layer string: "1", "2", "3", "4", or "5".
+ * Handles layer transitions for both Allopathy and Ayurveda systems.
  */
 
-/**
- * @param {string} text - User's input message
- * @param {string} currentLayer - Current active layer
- * @param {object} context - Session context {disease, medicine}
- * @returns {string} - Layer identifier
- */
-export function detectLayer(text, currentLayer, context) {
+export function detectLayer(text, currentLayer, context, system = "allopathy") {
+  if (system === "ayurveda") {
+    return detectAyurvedaLayer(text, currentLayer, context);
+  }
+  return detectAllopathyLayer(text, currentLayer, context);
+}
+
+// ── Ayurveda Layer Transitions ─────────────────────────────────
+// Layer "1" → Rogi Pariksha & Nidana
+// Layer "2" → Pathya-Apathya & Chikitsa
+// Layer "3" → Aushadhi Chikitsa
+// Layer "4" → Rasāyana Vijñāna 
+function detectAyurvedaLayer(text, currentLayer, context) {
   const lower = text.toLowerCase().trim();
+   // Layer 1 to 1
+  if (
+    currentLayer === "1" &&
+    /(symptom|present|Rogi|patient|year|Prakriti|Koshtha|Jatharagni|chief complaint|c\/c)/i.test(lower)
+  ) {
+    return "1";
+  }
+  // Layer 1 to 2
+  if (
+    currentLayer === "1" &&
+    /(yes|pathya|apathya|chikitsa|diet|lifestyle|management|proceed|vihara|niyama|shodhana|shamana|panchakarma|haan|sure|ok|please)/i.test(lower)
+  ) {
+    return "2";
+  }
+
+  // Layer 2 to 3
+  if (
+    currentLayer === "2" &&
+    /(yes|aushadhi|medicine|prescri|drug|formul|rasayana|haan|sure|ok|please|medication)/i.test(lower)
+  ) {
+    return "3";
+  }
+
+  
+  // Layer 3: Medicine/Aushadhi lookup
+  if (
+    /\b(yes|go ahead|churna|kwatha|arista|guggulu|ghrita|taila|rasayana|bhasma|vati|asava|lehya|avaleha)\b/i.test(lower) &&
+    (currentLayer === "3")
+  ) {
+    return "4";
+  }
+  // Stay on current layer by default
+  return currentLayer;
+}
+
+// ************Allopathy Layer Transitions ******************************************************
+
+function detectAllopathyLayer(text, currentLayer, context) {
+const lower = text.toLowerCase().trim();
 
   // ── Layer 5: Specific medicine lookup ─────────────────────
   if (
@@ -76,5 +120,5 @@ export function detectLayer(text, currentLayer, context) {
   }
 
   // ── Fallback: stay on current layer ───────────────────────
-  return currentLayer;
+  return currentLayer;  
 }

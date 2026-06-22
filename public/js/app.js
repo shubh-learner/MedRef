@@ -331,6 +331,7 @@ function setLayer(layer) {
       "1":  "Ayurveda 🌿 · Rogi Parikshā & Nidāna",
       "2":  "Ayurveda 🌿 · Pathya-Apathya & Chikitsā",
       "3":  "Ayurveda 🌿 · Aushadhi Chikitsā",
+      "4":  "Ayurveda 🌿 · RASĀYANA VIJÑĀNA",
     },
   };
   const systemLabels = labels[state.system] || labels["allopathy"];
@@ -370,7 +371,7 @@ async function handleSend() {
 
   welcomeEl.style.display = "none";
 
-  const detected = detectLayer(text, state.currentLayer, state.context);
+  const detected = detectLayer(text, state.currentLayer, state.context, state.system);
   if (detected !== state.currentLayer) setLayer(detected);
 
   appendMessage("user", text);
