@@ -27,7 +27,7 @@ function detectAyurvedaLayer(text, currentLayer, context) {
   // Layer 1 to 2
   if (
     currentLayer === "1" &&
-    /(yes|pathya|apathya|chikitsa|diet|lifestyle|management|proceed|vihara|niyama|shodhana|shamana|panchakarma|haan|sure|ok|please)/i.test(lower)
+    /(yes|pathya|apathya|chikitsa|layer|proceed|next|haan|sure|ok|please)/i.test(lower)
   ) {
     return "2";
   }
@@ -35,7 +35,7 @@ function detectAyurvedaLayer(text, currentLayer, context) {
   // Layer 2 to 3
   if (
     currentLayer === "2" &&
-    /(yes|aushadhi|medicine|prescri|drug|formul|rasayana|haan|sure|ok|please|medication)/i.test(lower)
+    /(yes|aushadhi|medicine|prescri|next|layer|haan|sure|ok|please|medication)/i.test(lower)
   ) {
     return "3";
   }
@@ -43,7 +43,7 @@ function detectAyurvedaLayer(text, currentLayer, context) {
   
   // Layer 3: Medicine/Aushadhi lookup
   if (
-    /\b(yes|go ahead|churna|kwatha|arista|guggulu|ghrita|taila|rasayana|bhasma|vati|asava|lehya|avaleha)\b/i.test(lower) &&
+    /\b(yes|go ahead|churna|next|layer|kwatha|arista|guggulu|ghrita|taila|rasayana|bhasma|vati|asava|lehya|avaleha)\b/i.test(lower) &&
     (currentLayer === "3")
   ) {
     return "4";

@@ -81,9 +81,10 @@ const SYSTEM_CARDS = {
     { layer: "5", icon: "🔎", title: "Medicine Profile",           desc: "Type the medicine name eg. \"ibuprofen\"" },
   ],
   ayurveda: [
-    { layer: "1",  icon: "🔬", title: "ROGI PARIKSHĀ & NIDĀNA",    desc: "CLICK THIS CARD to start Ayurvedic diagnosis" },
-    { layer: "2",  icon: "🛡️", title: "PATHYA-APATHYA & CHIKITSĀ SŪTRA",  desc: "Ayurvedic management & lifestyle guidance" },
-    { layer: "3", icon: "🌿", title: "AUSHADHI CHIKITSĀ",           desc: "Full profile of an Ayurvedic medicine" },
+    { layer: "1",  icon: "🔬", title: "ROGI PARIKSHĀ & NIDĀNA",    desc: "CLICK THIS CARD to start Ayurvedic diagnosis. Next layer, type \"yes\" or \"next layer\"" },
+    { layer: "2",  icon: "🛡️", title: "PATHYA-APATHYA & CHIKITSĀ SŪTRA",  desc: "Ayurvedic management & lifestyle guidance. Next layer, type \"yes\" or \"next layer\"" },
+    { layer: "3", icon: "🌿", title: "AUSHADHI CHIKITSĀ",           desc: "Full profile of an Ayurvedic medicine. Next layer, type \"yes\" or \"next layer\"" },
+    { layer: "4", icon: "🧪", title: "RASĀYANA VIJÑĀNA",           desc: "Science of rejuvenation and longevity" },
   ],
 };
 
@@ -99,8 +100,19 @@ function renderTipCards(system) {
       <div class="tip-icon">${card.icon}</div>
       <div class="tip-text"><strong>${card.title}</strong><br/>${card.desc}</div>
     `;
+
+        // For Ayurveda, only first card (layer 1) is clickable
+    if (state.system === "ayurveda" && card.layer !== "1") {
+      el.style.opacity        = "0.6";
+      el.style.cursor         = "not-allowed";
+      el.style.pointerEvents  = "none";
+      el.style.filter         = "none";
+      el.style.transform      = "none";
+      el.style.background     = "var(--bg-card)";
+      el.style.border         = "1px solid var(--border)";
+    }
+
     el.addEventListener("click", () => {
-      // Open Rogi form for Ayurveda Layer 1
       if (state.system === "ayurveda" && card.layer === "1") {
         setLayer("1");
         setActiveTipCard("1");

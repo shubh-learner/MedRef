@@ -86,6 +86,8 @@ ${context.medicine ? `Medicine requested: **${context.medicine}**` : ""}
 Provide a clearly structured clinical profile list covering:
 - **Drug Class & Mechanism of Action**
 - **Indications** (diseases/conditions)
+- **Category** (eg. antibiotic, antihypertensive, antidiabetic etc.)
+- **Purpose** (eg. reduce blood pressure, treat infection, manage diabetes etc.)
 - **Severity Tier** (First-line / Moderate / Severe)
 - **Dosage Regimen, frequency, timing, duration**
 - **Route of Administration**
