@@ -291,9 +291,9 @@ function startNewConsult() {
 // ── Rogi Pariksha Form ─────────────────────────────────────────
 function openRogiForm() {
   // Clear all fields
-  ["rp-age-gender","rp-vikriti","rp-ahara","rp-vihara","rp-desha","rp-kala"]
-    .forEach(id => document.getElementById(id).value = "");
-  ["rp-prakriti","rp-agni","rp-koshtha","rp-bala","rp-sattva"]
+  ["rp-age-gender","rp-vikriti","rp-ahara","rp-vihara","rp-desha","rp-kala","rp-urine","rp-stool","rp-tongue"]
+  .forEach(id => document.getElementById(id).value = "");
+  ["rp-prakriti","rp-agni","rp-bala","rp-sattva","rp-sara","rp-pramana"]
     .forEach(id => document.getElementById(id).selectedIndex = 0);
   rogiModal.classList.remove("hidden");
 }
@@ -312,13 +312,17 @@ function submitRogiForm() {
 4. Āhāra Habits (Diet): ${get("rp-ahara")}
 5. Vihāra (Lifestyle): ${get("rp-vihara")}
 6. Jatharagni Status: ${get("rp-agni")}
-7. Koshtha (Bowel Habits): ${get("rp-koshtha")}
-8. Bala (Physical Strength): ${get("rp-bala")}
-9. Sattva (Mental Clarity): ${get("rp-sattva")}
-10. Desha (Location): ${get("rp-desha")}
-11. Kāla (Seasonal Influence): ${get("rp-kala")}
+7. Bala (Physical Strength): ${get("rp-bala")}
+8. Sattva (Mental Clarity): ${get("rp-sattva")}
+9. Desha (Location): ${get("rp-desha")}
+10. Kāla (Seasonal Influence): ${get("rp-kala")}
+11. Sārā (Tissue Excellence): ${get("rp-sara")}
+12. Pramāṇa (Anthropometry): ${get("rp-pramana")}
+13. Mūtra Parīkshā (Urine): ${get("rp-urine")}
+14. Purīsha Parīkshā (Stool): ${get("rp-stool")}
+15. Jihvā Parīkshā (Tongue): ${get("rp-tongue")}
 
-Please perform a complete Rogi Parikshā and Vyādhi Nirṇaya based on the above.`;
+Please perform a complete Rogi Parikshā and Vyādhi Nirṇaya based on the above clinical intake data.`;
 
   closeRogiForm();
 

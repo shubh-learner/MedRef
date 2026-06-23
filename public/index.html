@@ -188,7 +188,7 @@
 <div id="rogi-modal" class="modal-overlay hidden">
   <div class="modal-box rogi-modal-box">
     <div class="modal-header">
-      <span class="modal-title">🌿 Rogi Parikshā — Patient Intake Form (11 Questions)</span>
+      <span class="modal-title">🌿 Rogi Parikshā — Patient Intake Form (16 Questions)</span>
       <button id="rogi-modal-close" class="icon-btn">✕</button>
     </div>
     <div class="rogi-form-body">
@@ -202,7 +202,14 @@
 
       <div class="form-row">
         <div class="form-group">
-          <label class="input-label">2. Prakriti (Constitution)</label>
+          <label class="input-label">2. Vikṛiti — Symptoms (list all)</label>
+          <input type="text" id="rp-vikriti" class="text-input" placeholder="e.g. bloating, constipation, fatigue, headache" />
+        </div>
+      </div>
+
+       <div class="form-row">
+        <div class="form-group">
+          <label class="input-label">3. Prakriti (Constitution)</label>
           <select id="rp-prakriti" class="select-input">
             <option value="">-- Select Prakriti --</option>
             <option value="Vata">Vāta</option>
@@ -213,13 +220,6 @@
             <option value="Vata-Kapha">Vāta-Kapha</option>
             <option value="Tridoshic">Tridoshic (Sama)</option>
           </select>
-        </div>
-      </div>
-
-      <div class="form-row">
-        <div class="form-group">
-          <label class="input-label">3. Vikṛiti — Symptoms (list all)</label>
-          <input type="text" id="rp-vikriti" class="text-input" placeholder="e.g. bloating, constipation, fatigue, headache" />
         </div>
       </div>
 
@@ -246,18 +246,6 @@
             <option value="Manda Agni (Weak)">Manda Agni — Weak / Slow</option>
             <option value="Tikshna Agni (Excessive)">Tīkshṇa Agni — Excessive / Sharp</option>
             <option value="Vishama Agni (Irregular)">Vishama Agni — Irregular</option>
-          </select>
-        </div>
-      </div>
-
-      <div class="form-row">
-        <div class="form-group">
-          <label class="input-label">7. Koshtha (Bowel Habits)</label>
-          <select id="rp-koshtha" class="select-input">
-            <option value="">-- Select Koshtha --</option>
-            <option value="Mrudu Koshtha (Loose/Soft)">Mṛdu — Loose / Soft</option>
-            <option value="Krura Koshtha (Constipated)">Krūra — Constipated / Hard</option>
-            <option value="Madhya Koshtha (Balanced)">Madhya — Balanced</option>
           </select>
         </div>
       </div>
@@ -299,6 +287,57 @@
           <input type="text" id="rp-kala" class="text-input" placeholder="e.g. Winter, Shishira Ritu, symptoms worse in cold" />
         </div>
       </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="input-label">12. Sārā (Tissue Excellence)</label>
+          <select id="rp-sara" class="select-input">
+            <option value="">-- Select Sārā --</option>
+            <option value="Tvak Sārā — Smooth, soft, glowing skin; excellent sensory perception">Tvak Sārā — Smooth, soft, glowing skin</option>
+            <option value="Rakta Sārā — Radiant complexion, enthusiasm, vitality, sharp intellect">Rakta Sārā — Radiant complexion, enthusiasm, vitality</option>
+            <option value="Māmsa Sārā — Strong build, firm flesh, endurance, stable temperament">Māmsa Sārā — Strong build, firm flesh, endurance</option>
+            <option value="Meda Sārā — Well-lubricated joints, soft skin, pleasant voice, moderate strength">Meda Sārā — Well-lubricated joints, soft skin, pleasant voice</option>
+            <option value="Asthi Sārā — Prominent joints and bones, strong nails, teeth, and hair">Asthi Sārā — Prominent joints and bones, strong nails and teeth</option>
+            <option value="Majjā Sārā — Unctuous body, deep voice, strong joints, good memory">Majjā Sārā — Unctuous body, deep voice, strong memory</option>
+            <option value="Shukra Sārā — Lustrous eyes, cheerful disposition, courage, strong constitution">Shukra Sārā — Lustrous eyes, cheerful, strong constitution</option>
+            <option value="Satva Sārā — Sharp memory, fearlessness, gratitude, excellent mental stability">Satva Sārā — Sharp memory, fearlessness, mental stability</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="input-label">13. Pramāṇa (Anthropometry)</label>
+          <select id="rp-pramana" class="select-input">
+            <option value="">-- Select Pramāṇa --</option>
+            <option value="Balanced Pramāṇa — Height and weight proportionate, symmetrical body structure">Balanced Pramāṇa — Height and weight proportionate</option>
+            <option value="Imbalanced Pramāṇa — Height and/or weight disproportionate; asymmetry noted">Imbalanced Pramāṇa — Height and/or weight disproportionate</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="input-label">14. Mūtra Parīkshā (Urine)</label>
+          <input type="text" id="rp-urine" class="text-input" placeholder="e.g. pale yellow/dark yellow, clear, no odour / dark yellow, strong smell" />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="input-label">15. Purīsha Parīkshā (Stool)</label>
+          <input type="text" id="rp-stool" class="text-input" placeholder="e.g. brown/yellow/whitish, formed, once daily / loose, undigested food particles" />
+        </div>
+      </div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label class="input-label">16. Jihvā Parīkshā (Tongue)</label>
+          <input type="text" id="rp-tongue" class="text-input" placeholder="e.g. pink/red/purple, no coating / white coated, dry, cracked at edges" />
+        </div>
+      </div>
+
+    </div>
 
     </div>
 
