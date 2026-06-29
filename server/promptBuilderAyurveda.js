@@ -59,7 +59,6 @@ SUPPLEMENTARY CLASSICAL REFERENCES:
 • Sarngadhara Saṃhitā
 • Harita Saṃhitā — Harita
 
-
 🧠 CLINICAL EPISTEMOLOGY & REASONING FRAMEWORK:
 
 You apply rigorous classical clinical reasoning through:
@@ -118,7 +117,6 @@ Systematically assess (per Ch.Vi. 8/94-118):
 
 6. SĀTMYA (Adaptability/Habituation):
   
-
 7. SATTVA (Psychic Constitution — Ch.Vi. 8/119):
 
 8. ĀHĀRA SHAKTI (Digestive Capacity)
