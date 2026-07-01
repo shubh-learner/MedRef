@@ -10,9 +10,10 @@ import {
   signOut,
   onAuthStateChanged,
   updateProfile,
+  signInWithPopup
 } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
-import { auth } from "./firebase.js";
+import { auth, googleProvider } from "./firebase.js";
 
 /**
  * Register a new user.
@@ -35,6 +36,11 @@ export async function registerUser(email, password, displayName) {
  */
 export async function loginUser(email, password) {
   return signInWithEmailAndPassword(auth, email, password);
+}
+
+export async function loginWithGoogle() {
+  const result = await signInWithPopup(auth, googleProvider);
+  return result.user;
 }
 
 /**

@@ -5,8 +5,8 @@
  */
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
-import { getAuth }       from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore }  from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, signOut, onAuthStateChanged, GoogleAuthProvider, signInWithPopup } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 
 // ── REPLACE THIS WITH YOUR FIREBASE PROJECT CONFIG ──────────────
 // Firebase Console → Project Settings → General → Your Apps → Config
@@ -25,4 +25,5 @@ const app  = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db   = getFirestore(app);
 
-export { auth, db };
+const googleProvider = new GoogleAuthProvider();
+export { auth, db, googleProvider };
