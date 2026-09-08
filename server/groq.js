@@ -2,9 +2,9 @@ const https = require("https");
 
 // Groq free tier models — ordered by capability, fallback on rate limit
 const MODELS = [
-  "llama-3.3-70b-versatile",   // Best quality, 30 RPM free
-  "llama-3.1-8b-instant",      // Faster, higher limits
-  "gemma2-9b-it",              // Last resort fallback
+  "openai/gpt-oss-120b",   // Best quality (~500 t/s), replaces llama-3.3-70b-versatile
+  "openai/gpt-oss-20b",    // Faster (~1000 t/s), replaces llama-3.1-8b-instant
+  "qwen/qwen3.6-27b",      // Last resort fallback, also vision-capable
 ];
 
 const GROQ_API_URL = "api.groq.com";
