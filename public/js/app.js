@@ -40,7 +40,7 @@ const rogiModal     = document.getElementById("rogi-modal");
 // ── Boot: Firebase auth guard ──────────────────────────────────
 onAuthChange(async (user) => {
   if (!user) {
-    window.location.href = "/auth";
+    window.location.href = "/auth.html";
     return;
   }
 
