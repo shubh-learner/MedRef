@@ -95,6 +95,10 @@ async function callGroq(apiKey, userMessage, history, systemPrompt) {
   for (const model of MODELS) {
     try {
       console.log(`[MedRef] Trying Groq model: ${model}`);
+      const finish = parsed?.choices?.[0]?.finish_reason;
+      if (finish === "length") {
+        console.warn(`[MedRef] Response cut short — hit token limit`);
+}
       const text = await requestGroq(apiKey, model, messages);
       console.log(`[MedRef] ✓ Success with: ${model}`);
       return text;
