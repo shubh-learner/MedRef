@@ -19,7 +19,7 @@ function requestGroq(apiKey, model, messages) {
       model,
       messages,
       temperature: 0.4,
-      max_tokens: 2048,
+      max_tokens: 8192,
     });
 
     const options = {
