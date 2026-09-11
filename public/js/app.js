@@ -8,6 +8,9 @@ import { renderMarkdown }                           from "./markdown.js";
 import { detectLayer }                              from "./layerDetector.js";
 import { onAuthChange, logoutUser }                 from "./auth.js";
 import { loadGroqKey, saveGroqKey }                 from "./keyStore.js";
+import { db }                                       from "./firebase.js";
+import { collection, addDoc, getDocs,
+         orderBy, query, serverTimestamp }          from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 // ── Session state ──────────────────────────────────────────────
 const state = {
@@ -18,6 +21,7 @@ const state = {
   groqKey:      null,
   user:         null,
   system:       "allopathy",
+  diagnosisId:  null,
 };
 
 // ── DOM refs ───────────────────────────────────────────────────
@@ -132,6 +136,12 @@ function renderTipCards(system) {
   chatInput.addEventListener("input", () => {
     chatInput.style.height = "auto";
     chatInput.style.height = Math.min(chatInput.scrollHeight, 120) + "px";
+    document.getElementById("save-diagnosis-btn")
+      .addEventListener("click", saveDiagnosis);
+    document.getElementById("history-btn")
+      .addEventListener("click", openHistoryPanel);
+    document.getElementById("history-panel-close")
+      .addEventListener("click", closeHistoryPanel);
   });
 
   chatInput.addEventListener("keydown", (e) => {
@@ -467,6 +477,91 @@ function appendError(msg) {
   b.textContent = `⚠ ${msg}`;
   wrap.appendChild(b); messagesEl.appendChild(wrap);
   scrollToBottom();
+}
+
+// ── Save Diagnosis ─────────────────────────────────────────────
+async function saveDiagnosis() {
+  if (!state.history.length) return;
+  const btn = document.getElementById("save-diagnosis-btn");
+  btn.disabled = true;
+  btn.textContent = "Saving...";
+  try {
+    const col = collection(db, "users", state.user.uid, "diagnoses");
+    const firstMsg = state.history.find(h => h.role === "user")?.text || "Untitled";
+    await addDoc(col, {
+      title:        firstMsg.slice(0, 80),
+      system:       state.system,
+      layer:        state.currentLayer,
+      conversation: state.history,
+      timestamp:    serverTimestamp(),
+    });
+    btn.textContent = "✓ Saved";
+    setTimeout(() => {
+      btn.disabled = false;
+      btn.textContent = "💾 Save Diagnosis";
+    }, 2000);
+    await loadDiagnosisHistory(); // refresh sidebar list
+  } catch (err) {
+    console.error("Save failed:", err);
+    btn.disabled = false;
+    btn.textContent = "💾 Save Diagnosis";
+  }
+}
+
+// ── Load History from Firestore ────────────────────────────────
+async function loadDiagnosisHistory() {
+  const col     = collection(db, "users", state.user.uid, "diagnoses");
+  const q       = query(col, orderBy("timestamp", "desc"));
+  const snap    = await getDocs(q);
+  const listEl  = document.getElementById("diagnosis-history-list");
+  listEl.innerHTML = "";
+
+  if (snap.empty) {
+    listEl.innerHTML = `<div class="history-empty">No saved diagnoses yet.</div>`;
+    return;
+  }
+
+  snap.forEach(docSnap => {
+    const d   = docSnap.data();
+    const el  = document.createElement("div");
+    el.className = "history-item";
+    const date = d.timestamp?.toDate().toLocaleDateString("en-IN", {
+      day: "2-digit", month: "short", year: "numeric"
+    }) || "";
+    el.innerHTML = `
+      <div class="history-title">${escapeHtml(d.title)}</div>
+      <div class="history-meta">${d.system} · ${date}</div>
+    `;
+    el.addEventListener("click", () => restoreDiagnosis(d));
+    listEl.appendChild(el);
+  });
+}
+
+// ── Restore a saved diagnosis into chat ────────────────────────
+function restoreDiagnosis(d) {
+  state.history      = d.conversation || [];
+  state.system       = d.system || "allopathy";
+  state.currentLayer = d.layer  || "1";
+  messagesEl.innerHTML = "";
+  welcomeEl.style.display = "none";
+  state.history.forEach(msg => appendMessage(msg.role, msg.text));
+
+  // Sync UI system buttons
+  document.querySelectorAll(".system-btn").forEach(b => {
+    b.classList.toggle("active", b.dataset.system === state.system);
+  });
+  renderTipCards(state.system);
+  setLayer(state.currentLayer);
+  closeHistoryPanel();
+}
+
+// ── History Panel toggle ───────────────────────────────────────
+function openHistoryPanel() {
+  document.getElementById("history-panel").classList.remove("hidden");
+  loadDiagnosisHistory();
+}
+function closeHistoryPanel() {
+  document.getElementById("history-panel").classList.add("hidden");
 }
 
 function scrollToBottom() { document.getElementById("chat-area").scrollTop = 99999; }
