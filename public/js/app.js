@@ -240,6 +240,37 @@ function renderTipCards(system) {
     ayurvedaArrow.classList.toggle("open", !isOpen);
   });
 
+    // Mobile sidebar toggle
+  const sidebarToggle  = document.getElementById("sidebar-toggle");
+  const sidebarOverlay = document.getElementById("sidebar-overlay");
+  const sidebarEl      = document.querySelector(".sidebar");
+  const sidebarClose   = document.getElementById("sidebar-close-btn");
+
+  function openSidebar() {
+    sidebarEl.classList.add("open");
+    sidebarOverlay.classList.add("active");
+    sidebarToggle.style.display = "none";
+  }
+
+  function closeSidebar() {
+    sidebarEl.classList.remove("open");
+    sidebarOverlay.classList.remove("active");
+    // Only show toggle on mobile
+    if (window.innerWidth <= 640) {
+      sidebarToggle.style.display = "flex";
+    }
+  }
+
+  sidebarToggle.addEventListener("click",  openSidebar);
+  sidebarOverlay.addEventListener("click", closeSidebar);
+  sidebarClose.addEventListener("click",   closeSidebar);
+
+  // Close sidebar when any nav item or footer button is clicked on mobile
+  document.querySelectorAll(".layer-item, .sidebar-btn, .specialty-header")
+    .forEach(el => el.addEventListener("click", () => {
+      if (window.innerWidth <= 640) closeSidebar();
+    }));
+
 })();
 
 // ── Settings ───────────────────────────────────────────────────
@@ -557,7 +588,26 @@ function restoreDiagnosis(d) {
 
 // ── History Panel toggle ───────────────────────────────────────
 function openHistoryPanel() {
-  document.getElementById("history-panel").classList.remove("hidden");
+  const panel = document.getElementById("history-panel");
+  panel.classList.remove("hidden");
+  console.log("state.user at open:", state.user);
+  console.log("panel element:", document.getElementById("history-panel"));
+
+  if (!state.user) {
+    document.getElementById("diagnosis-history-list").innerHTML =
+      `<div class="history-empty">Please wait, authenticating...</div>`;
+    // Poll until auth resolves
+    const wait = setInterval(() => {
+      if (state.user) {
+        clearInterval(wait);
+        loadDiagnosisHistory();
+      }
+    }, 300);
+    console.log("state.user at open:", state.user);
+    console.log("panel element:", document.getElementById("history-panel"));
+    return;
+  }
+
   loadDiagnosisHistory();
 }
 function closeHistoryPanel() {
