@@ -49,6 +49,10 @@ onAuthChange(async (user) => {
   }
 
   state.user = user;
+  
+  document.getElementById("history-btn").addEventListener("click", openHistoryPanel);
+  document.getElementById("history-panel-close").addEventListener("click", closeHistoryPanel);
+  document.getElementById("save-diagnosis-btn").addEventListener("click", saveDiagnosis);
 
   // Populate sidebar user badge
   const name = user.displayName || user.email.split("@")[0];
@@ -136,12 +140,6 @@ function renderTipCards(system) {
   chatInput.addEventListener("input", () => {
     chatInput.style.height = "auto";
     chatInput.style.height = Math.min(chatInput.scrollHeight, 120) + "px";
-    document.getElementById("save-diagnosis-btn")
-      .addEventListener("click", saveDiagnosis);
-    document.getElementById("history-btn")
-      .addEventListener("click", openHistoryPanel);
-    document.getElementById("history-panel-close")
-      .addEventListener("click", closeHistoryPanel);
   });
 
   chatInput.addEventListener("keydown", (e) => {
@@ -541,31 +539,50 @@ async function saveDiagnosis() {
 
 // ── Load History from Firestore ────────────────────────────────
 async function loadDiagnosisHistory() {
-  const col     = collection(db, "users", state.user.uid, "diagnoses");
-  const q       = query(col, orderBy("timestamp", "desc"));
-  const snap    = await getDocs(q);
-  const listEl  = document.getElementById("diagnosis-history-list");
-  listEl.innerHTML = "";
+  console.log("user:", state.user);
+  console.log("uid:", state.user?.uid);
 
-  if (snap.empty) {
-    listEl.innerHTML = `<div class="history-empty">No saved diagnoses yet.</div>`;
+  if (!state.user) {
+    document.getElementById("diagnosis-history-list").innerHTML =
+      `<div class="history-empty">Not logged in.</div>`;
     return;
   }
 
-  snap.forEach(docSnap => {
-    const d   = docSnap.data();
-    const el  = document.createElement("div");
-    el.className = "history-item";
-    const date = d.timestamp?.toDate().toLocaleDateString("en-IN", {
-      day: "2-digit", month: "short", year: "numeric"
-    }) || "";
-    el.innerHTML = `
-      <div class="history-title">${escapeHtml(d.title)}</div>
-      <div class="history-meta">${d.system} · ${date}</div>
-    `;
-    el.addEventListener("click", () => restoreDiagnosis(d));
-    listEl.appendChild(el);
-  });
+  try {
+    const col  = collection(db, "users", state.user.uid, "diagnoses");
+    const q    = query(col, orderBy("timestamp", "desc"));
+    const snap = await getDocs(q);
+
+    console.log("Firestore snap size:", snap.size);
+
+    const listEl = document.getElementById("diagnosis-history-list");
+    listEl.innerHTML = "";
+
+    if (snap.empty) {
+      listEl.innerHTML = `<div class="history-empty">No saved diagnoses yet.</div>`;
+      return;
+    }
+
+    snap.forEach(docSnap => {
+      const d  = docSnap.data();
+      const el = document.createElement("div");
+      el.className = "history-item";
+      const date = d.timestamp?.toDate().toLocaleDateString("en-IN", {
+        day: "2-digit", month: "short", year: "numeric"
+      }) || "";
+      el.innerHTML = `
+        <div class="history-title">${escapeHtml(d.title)}</div>
+        <div class="history-meta">${d.system} · ${date}</div>
+      `;
+      el.addEventListener("click", () => restoreDiagnosis(d));
+      listEl.appendChild(el);
+    });
+
+  } catch (err) {
+    console.error("Firestore error:", err);
+    document.getElementById("diagnosis-history-list").innerHTML =
+      `<div class="history-empty">Error: ${err.message}</div>`;
+  }
 }
 
 // ── Restore a saved diagnosis into chat ────────────────────────
@@ -588,28 +605,11 @@ function restoreDiagnosis(d) {
 
 // ── History Panel toggle ───────────────────────────────────────
 function openHistoryPanel() {
-  const panel = document.getElementById("history-panel");
-  panel.classList.remove("hidden");
-  console.log("state.user at open:", state.user);
-  console.log("panel element:", document.getElementById("history-panel"));
-
-  if (!state.user) {
-    document.getElementById("diagnosis-history-list").innerHTML =
-      `<div class="history-empty">Please wait, authenticating...</div>`;
-    // Poll until auth resolves
-    const wait = setInterval(() => {
-      if (state.user) {
-        clearInterval(wait);
-        loadDiagnosisHistory();
-      }
-    }, 300);
-    console.log("state.user at open:", state.user);
-    console.log("panel element:", document.getElementById("history-panel"));
-    return;
-  }
-
+  document.getElementById("history-panel").classList.remove("hidden");
   loadDiagnosisHistory();
 }
+
+
 function closeHistoryPanel() {
   document.getElementById("history-panel").classList.add("hidden");
 }
