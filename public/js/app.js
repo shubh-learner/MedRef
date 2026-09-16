@@ -9,9 +9,9 @@ import { detectLayer }                              from "./layerDetector.js";
 import { onAuthChange, logoutUser }                 from "./auth.js";
 import { loadGroqKey, saveGroqKey }                 from "./keyStore.js";
 import { db }                                       from "./firebase.js";
-import { collection, addDoc, getDocs,
-         orderBy, query, serverTimestamp }          from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
-
+import { collection, addDoc, getDocs, deleteDoc,
+         orderBy, query, serverTimestamp, doc,
+         limit }                                    from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 // ── Session state ──────────────────────────────────────────────
 const state = {
   history:      [],
@@ -519,6 +519,15 @@ async function saveDiagnosis() {
   btn.textContent = "Saving...";
   try {
     const col = collection(db, "users", state.user.uid, "diagnoses");
+
+    // Check count — if 20 or more, delete the oldest one first
+    const countQ = query(col, orderBy("timestamp", "asc"));
+    const countSnap = await getDocs(countQ);
+    if (countSnap.size >= 20) {
+      const oldest = countSnap.docs[0];
+      await deleteDoc(doc(db, "users", state.user.uid, "diagnoses", oldest.id));
+    }
+
     const firstMsg = state.history.find(h => h.role === "user")?.text || "Untitled";
     await addDoc(col, {
       title:        firstMsg.slice(0, 80),
@@ -532,7 +541,6 @@ async function saveDiagnosis() {
       btn.disabled = false;
       btn.textContent = "💾 Save Diagnosis";
     }, 2000);
-    await loadDiagnosisHistory(); // refresh sidebar list
   } catch (err) {
     console.error("Save failed:", err);
     btn.disabled = false;
@@ -542,9 +550,6 @@ async function saveDiagnosis() {
 
 // ── Load History from Firestore ────────────────────────────────
 async function loadDiagnosisHistory() {
-  console.log("user:", state.user);
-  console.log("uid:", state.user?.uid);
-
   if (!state.user) {
     document.getElementById("diagnosis-history-list").innerHTML =
       `<div class="history-empty">Not logged in.</div>`;
@@ -556,8 +561,6 @@ async function loadDiagnosisHistory() {
     const q    = query(col, orderBy("timestamp", "desc"));
     const snap = await getDocs(q);
 
-    console.log("Firestore snap size:", snap.size);
-
     const listEl = document.getElementById("diagnosis-history-list");
     listEl.innerHTML = "";
 
@@ -566,18 +569,51 @@ async function loadDiagnosisHistory() {
       return;
     }
 
+    // Max 20 notice
+    const notice = document.createElement("div");
+    notice.className = "history-notice";
+    notice.textContent = `ℹ️ Max 20 chats saved. Oldest auto-deleted when limit reached. (${snap.size}/20)`;
+    listEl.appendChild(notice);
+
     snap.forEach(docSnap => {
-      const d  = docSnap.data();
-      const el = document.createElement("div");
+      const d   = docSnap.data();
+      const el  = document.createElement("div");
       el.className = "history-item";
       const date = d.timestamp?.toDate().toLocaleDateString("en-IN", {
         day: "2-digit", month: "short", year: "numeric"
       }) || "";
+
       el.innerHTML = `
-        <div class="history-title">${escapeHtml(d.title)}</div>
-        <div class="history-meta">${d.system} · ${date}</div>
+        <div class="history-item-content">
+          <div class="history-title">${escapeHtml(d.title)}</div>
+          <div class="history-meta">${d.system} · ${date}</div>
+        </div>
+        <button class="history-delete-btn" title="Delete">🗑</button>
       `;
-      el.addEventListener("click", () => restoreDiagnosis(d));
+
+      // Click on content → restore
+      el.querySelector(".history-item-content")
+        .addEventListener("click", () => restoreDiagnosis(d));
+
+      // Click on delete button → delete
+      el.querySelector(".history-delete-btn")
+        .addEventListener("click", async (e) => {
+          e.stopPropagation();
+          el.style.opacity = "0.4";
+          try {
+            await deleteDoc(doc(db, "users", state.user.uid, "diagnoses", docSnap.id));
+            el.remove();
+            // If list is now empty, show empty state
+            const remaining = listEl.querySelectorAll(".history-item");
+            if (remaining.length === 0) {
+              listEl.innerHTML = `<div class="history-empty">No saved diagnoses yet.</div>`;
+            }
+          } catch (err) {
+            console.error("Delete failed:", err);
+            el.style.opacity = "1";
+          }
+        });
+
       listEl.appendChild(el);
     });
 
