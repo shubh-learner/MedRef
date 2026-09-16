@@ -842,6 +842,7 @@ body {
     top: 0;
     left: 0;
     height: 100vh;
+    height: 100dvh;        /* ← dynamic viewport height */
     z-index: 700;
     transform: translateX(-100%);
     transition: transform 0.28s cubic-bezier(0.4, 0, 0.2, 1);
@@ -850,7 +851,8 @@ body {
     flex-shrink: 0;
     margin-left: 0;
     min-width: 0;
-    overflow: hidden;
+    overflow-y: auto;      /* ← allow scrolling inside sidebar */
+    overflow-x: hidden;
   }
 
   body > .sidebar {
@@ -862,6 +864,14 @@ body {
   body > .sidebar.open {
     width: var(--sidebar-w) !important;
     overflow: hidden;
+  }
+
+  .sidebar-footer {
+    position: sticky;
+    bottom: 0;
+    background: var(--bg-surface);
+    padding-bottom: 16px;
+    z-index: 1;
   }
 
   .sidebar.open {
@@ -1000,6 +1010,24 @@ body {
 
   .chat-input {
     font-size: 14px;
+  }
+}
+
+@media (max-width: 640px) {
+  .sidebar {
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+    height: 100dvh !important;
+  }
+
+  .sidebar-footer {
+    position: static !important;
+    margin-top: 24px;
+    padding-bottom: 32px;
+  }
+
+  .layer-nav {
+    flex: 0 0 auto;
   }
 }
 
