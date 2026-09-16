@@ -190,15 +190,19 @@ function renderTipCards(system) {
       const ayurvedaGroup  = document.getElementById("ayurveda-group");
 
       if (state.system === "allopathy") {
-		    allopathyGroup.style.display = "block";
-        ayurvedaGroup.style.display  = "none";
-        document.getElementById("allopathy-items").style.display = "block";
-        document.getElementById("allopathy-arrow").classList.add("open");   
+        if (allopathyGroup) allopathyGroup.style.display = "block";
+        if (ayurvedaGroup)  ayurvedaGroup.style.display  = "none";
+        const ai = document.getElementById("allopathy-items");
+        const aa = document.getElementById("allopathy-arrow");
+        if (ai) ai.style.display = "block";
+        if (aa) aa.classList.add("open");
       } else {
-		    allopathyGroup.style.display = "none";
-        ayurvedaGroup.style.display  = "block";
-        document.getElementById("ayurveda-items").style.display = "block";
-        document.getElementById("ayurveda-arrow").classList.add("open"); 
+        if (allopathyGroup) allopathyGroup.style.display = "none";
+        if (ayurvedaGroup)  ayurvedaGroup.style.display  = "block";
+        const yi = document.getElementById("ayurveda-items");
+        const ya = document.getElementById("ayurveda-arrow");
+        if (yi) yi.style.display = "block";
+        if (ya) ya.classList.add("open");
       }
 
       state.history = [];
@@ -209,34 +213,33 @@ function renderTipCards(system) {
     });
   });
 
-  // Allopathy accordion toggle
+  // allopathy block
   const allopathyHeader = document.getElementById("allopathy-header");
   const allopathyItems  = document.getElementById("allopathy-items");
   const allopathyArrow  = document.getElementById("allopathy-arrow");
 
-  // Expand by default on load
-  allopathyItems.style.display = "block";
-  allopathyArrow.classList.add("open");
+  if (allopathyHeader && allopathyItems && allopathyArrow) {
+    allopathyItems.style.display = "block";
+    allopathyArrow.classList.add("open");
+    allopathyHeader.addEventListener("click", () => {
+      const isOpen = allopathyItems.style.display !== "none";
+      allopathyItems.style.display = isOpen ? "none" : "block";
+      allopathyArrow.classList.toggle("open", !isOpen);
+    });
+  }
 
-  allopathyHeader.addEventListener("click", () => {
-    const isOpen = allopathyItems.style.display !== "none";
-    allopathyItems.style.display = isOpen ? "none" : "block";
-    allopathyArrow.classList.toggle("open", !isOpen);
-  });
-
-
-  // Ayurveda accordion toggle
+  //Ayurveda block
   const ayurvedaHeader = document.getElementById("ayurveda-header");
   const ayurvedaItems  = document.getElementById("ayurveda-items");
   const ayurvedaArrow  = document.getElementById("ayurveda-arrow");
 
-  // Expand when clicked
-  
-  ayurvedaHeader.addEventListener("click", () => {
-    const isOpen = ayurvedaItems.style.display !== "none";
-    ayurvedaItems.style.display = isOpen ? "none" : "block";
-    ayurvedaArrow.classList.toggle("open", !isOpen);
-  });
+  if (ayurvedaHeader && ayurvedaItems && ayurvedaArrow) {
+    ayurvedaHeader.addEventListener("click", () => {
+      const isOpen = ayurvedaItems.style.display !== "none";
+      ayurvedaItems.style.display = isOpen ? "none" : "block";
+      ayurvedaArrow.classList.toggle("open", !isOpen);
+    });
+  }
 
     // Mobile sidebar toggle
   const sidebarToggle  = document.getElementById("sidebar-toggle");
