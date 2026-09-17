@@ -825,6 +825,15 @@ body {
   scrollbar-color: var(--border-strong) transparent;
 }
 
+.sidebar-toggle {
+  display: none;
+}
+
+.sidebar-close-btn {
+  display: none;
+}
+
+
 /* ======= RESPONSIVE ======= */
 @media (max-width: 640px) {
   html, body {
@@ -882,8 +891,8 @@ body {
     display: flex;
     position: fixed;
     left: 0;
-    top: 50%;
-    transform: translateY(-50%);
+    top: 25%;
+    transform: translateY(-25%);
     z-index: 500;
     width: 20px;
     height: 56px;
